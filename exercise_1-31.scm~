@@ -1,0 +1,43 @@
+; Part a: Create a (product term a inc b) procedure.
+(define (product term a inc b)
+  (define (iter a result)
+    (if (> a b)
+	result
+	(* (term a) (iter (inc a) result))))
+  (iter a 1))
+
+; Define (factorial n) in terms of (product term a inc b)
+
+; I'll define the identity and increment functions first
+(define (inc x) (+ 1 x))
+(define (identity x) x)
+
+; Here's the definition of factorial: the sum of consecutive integers
+; from 0 to n
+(define (factorial n) (product identity 1 inc n))
+
+; Define the pi approximation in terms of (product ...)
+; I'll define a fractional term first:
+(define (fraction frac) (/ (car frac) (cadr frac)))
+
+(define (apply-n f x n)
+  (define (iter a i n)
+    (if (> i n)
+	a
+	(iter (f a) (+ i 1) n)))
+  (iter x 1 n))
+
+(define (quarter-pi-approx n)
+  (define (quarter-pi-succ frac)
+    (if (< (car frac) (cadr frac))
+        (list (+ (car frac) 2) (cadr frac))
+	(list (car frac) (+ (cadr frac) 2))))
+    
+	  
+	  
+  (product identity (fraction 2 3) quarter-pi-succ (apply-n quarter-pi-succ (fraction 2 3) n)))
+
+(quarter-pi-approx 3)
+
+
+
